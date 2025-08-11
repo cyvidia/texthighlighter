@@ -505,7 +505,7 @@ export const getHighlights = function (el: HTMLElement, params?: paramsImp) {
     }
 };
 
-export const getHighlightById = function (el: HTMLElement, id:string, params?: paramsImp) {
+export const getHighlightsById = function (el: HTMLElement, id:string, params?: paramsImp) {
     if (!params) params = new paramsImp();
     params = defaults(params, {
         container: el,
@@ -514,10 +514,17 @@ export const getHighlightById = function (el: HTMLElement, id:string, params?: p
     });
 
     if (params.container) {
-        const node = params.container.querySelector(`[${ID_ATTR}="${id}"]`);
-        if (!node) return null;
+        const nodeList = params.container.querySelectorAll(`[${ID_ATTR}="${id}"]`);
+        let highlights = Array.prototype.slice.call(nodeList);
 
-        return node;   
+        if (params.andSelf === true && params.container.hasAttribute(ID_ATTR) && params.container.getAttribute(ID_ATTR) === id) {
+            highlights.push(params.container);
+        }
+
+        if (params.grouped) {
+            highlights = groupHighlights(highlights);
+        }
+        return highlights;  
     }
     return null
 }
@@ -596,10 +603,10 @@ const serializeHighlights = function (el: HTMLElement | null) {
     return hlDescriptors;
 };
 
-const removeHighlightById = function (el: HTMLElement, id:string) {
-    const highlight = getHighlightById(el, id);
-    if (!highlight) return;
-    _removeHighlights([highlight]);
+const removeHighlightById = function (el: HTMLElement, id:string, options?: optionsImpl) {
+    const highlights = getHighlightsById(el, id);
+    if (!highlights || highlights.length === 0) return;
+    _removeHighlights(highlights, options);
 }
 
 const removeHighlights = function (element: HTMLElement, options?: optionsImpl) {
