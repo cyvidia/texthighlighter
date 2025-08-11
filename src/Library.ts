@@ -6,6 +6,7 @@ import {
     IGNORE_TAGS,
     NODE_TYPE,
     DATA_ATTR,
+    ID_ATTR,
     dom,
     refineRangeBoundaries,
     sortByDepth,
@@ -44,6 +45,7 @@ function createWrapper(options: optionsImpl) {
  */
 const highlightRange = function (
     el: HTMLElement,
+    id:string,
     range: Range,
     wrapper: { cloneNode: (arg0: boolean) => any }
 ): HTMLElement[] {
@@ -74,6 +76,7 @@ const highlightRange = function (
             ) {
                 wrapperClone = wrapper.cloneNode(true);
                 wrapperClone.setAttribute(DATA_ATTR, true);
+                wrapperClone.setAttribute(ID_ATTR, id);
                 nodeParent = node.parentNode;
 
                 // highlight if a node is inside the el
@@ -284,13 +287,13 @@ const getSelectedRange = function (el: HTMLElement) {
  * @param options 
  * @returns 
  */
-const doHighlight = function (el: HTMLElement, keepRange: boolean, options?: optionsImpl): boolean {
+const doHighlight = function (el: HTMLElement,id:string, keepRange: boolean, options?: optionsImpl): boolean {
     let range = getSelectedRange(el);
     if (!range || range.collapsed) {
         return false;
     }
 
-    return doHighlightOnRange(el, range, keepRange, options);
+    return doHighlightOnRange(el, range, id,keepRange, options);
 }
 
 /**
@@ -303,6 +306,7 @@ const doHighlight = function (el: HTMLElement, keepRange: boolean, options?: opt
 const doHighlightOnRange = function (
     el: HTMLElement,
     range:Range,
+    id:string,
     keepRange: boolean,
     options?: optionsImpl
 ): boolean {
@@ -338,7 +342,7 @@ const doHighlightOnRange = function (
         wrapper = createWrapper(options);
         wrapper.setAttribute(TIMESTAMP_ATTR, timestamp);
 
-        createdHighlights = highlightRange(el, range, wrapper);
+        createdHighlights = highlightRange(el,id, range, wrapper);
         if (createdHighlights.length > 0) highlightMade = true;
         normalizedHighlights = normalizeHighlights(createdHighlights);
         if (options.onAfterHighlight)
@@ -433,38 +437,38 @@ const deserializeHighlights = function (el: HTMLElement, hlDescriptors: hlDescri
     return highlights;
 };
 
-export const find = function (el: HTMLElement, text: string, caseSensitive: boolean, options?: optionsImpl) {
-    const wnd = dom(el).getWindow();
-    if (wnd) {
-        const scrollX = wnd.scrollX,
-            scrollY = wnd.scrollY,
-            caseSens = (typeof caseSensitive === "undefined" ? true : caseSensitive);
+// export const find = function (el: HTMLElement, text: string, caseSensitive: boolean, options?: optionsImpl) {
+//     const wnd = dom(el).getWindow();
+//     if (wnd) {
+//         const scrollX = wnd.scrollX,
+//             scrollY = wnd.scrollY,
+//             caseSens = (typeof caseSensitive === "undefined" ? true : caseSensitive);
 
-        // dom(el).removeAllRanges();
-        // const test = wnd.innerh
+//         // dom(el).removeAllRanges();
+//         // const test = wnd.innerh
 
-        if ("find" in wnd) {
-            while ((wnd as any).find(text, caseSens)) {
-                doHighlight(el, true, options);
-            }
-        } else if ((wnd.document.body as any).createTextRange) {
-            const textRange = (wnd.document.body as any).createTextRange();
-            textRange.moveToElementText(el);
-            while (textRange.findText(text, 1, caseSens ? 4 : 0)) {
-                if (!dom(el).contains(textRange.parentElement()) && textRange.parentElement() !== el) {
-                    break;
-                }
+//         if ("find" in wnd) {
+//             while ((wnd as any).find(text, caseSens)) {
+//                 doHighlight(el, true, options);
+//             }
+//         } else if ((wnd.document.body as any).createTextRange) {
+//             const textRange = (wnd.document.body as any).createTextRange();
+//             textRange.moveToElementText(el);
+//             while (textRange.findText(text, 1, caseSens ? 4 : 0)) {
+//                 if (!dom(el).contains(textRange.parentElement()) && textRange.parentElement() !== el) {
+//                     break;
+//                 }
 
-                textRange.select();
-                doHighlight(el, true, options);
-                textRange.collapse(false);
-            }
-        }
+//                 textRange.select();
+//                 doHighlight(el, true, options);
+//                 textRange.collapse(false);
+//             }
+//         }
 
-        dom(el).removeAllRanges();
-        wnd.scrollTo(scrollX, scrollY);
-    }
-};
+//         dom(el).removeAllRanges();
+//         wnd.scrollTo(scrollX, scrollY);
+//     }
+// };
 
 /**
  * Returns highlights from given container.
@@ -500,6 +504,23 @@ export const getHighlights = function (el: HTMLElement, params?: paramsImp) {
         return highlights;
     }
 };
+
+export const getHighlightById = function (el: HTMLElement, id:string, params?: paramsImp) {
+    if (!params) params = new paramsImp();
+    params = defaults(params, {
+        container: el,
+        andSelf: true,
+        grouped: false
+    });
+
+    if (params.container) {
+        const node = params.container.querySelector(`[${ID_ATTR}="${id}"]`);
+        if (!node) return null;
+
+        return node;   
+    }
+    return null
+}
 
 /**
  * Serializes all highlights in the element the highlighter is applied to.
@@ -575,9 +596,20 @@ const serializeHighlights = function (el: HTMLElement | null) {
     return hlDescriptors;
 };
 
+const removeHighlightById = function (el: HTMLElement, id:string) {
+    const highlight = getHighlightById(el, id);
+    if (!highlight) return;
+    _removeHighlights([highlight]);
+}
+
 const removeHighlights = function (element: HTMLElement, options?: optionsImpl) {
-    const container = element,
-        highlights = getHighlights(element, { container: container });
+    const highlights = getHighlights(element, { container: element });
+
+    if (!highlights || highlights.length === 0) return;
+    _removeHighlights(highlights, options);
+}
+
+const _removeHighlights = function (highlights:any[], options?: optionsImpl) {
     // self = this;
     if (!highlights) return;
 
@@ -648,6 +680,7 @@ export {
     deserializeHighlights,
     serializeHighlights,
     removeHighlights,
+    removeHighlightById,
     createWrapper,
     highlightRange
 };

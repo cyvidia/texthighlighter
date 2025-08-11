@@ -20,6 +20,8 @@ const /**
    * @type {string}
    */
   DATA_ATTR = "data-highlighted",
+
+  ID_ATTR = "data-highlight-id",
   /**
    * Attribute used to group highlight wrappers.
    * @type {string}
@@ -488,6 +490,7 @@ function sortByDepth(arr: any, descending: any) {
 
 export {
   DATA_ATTR,
+  ID_ATTR,
   TIMESTAMP_ATTR,
   NODE_TYPE,
   IGNORE_TAGS,

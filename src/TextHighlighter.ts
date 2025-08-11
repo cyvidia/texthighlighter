@@ -1,4 +1,4 @@
-import { createWrapper, deserializeHighlights, doHighlight, find, flattenNestedHighlights, getHighlights, highlightRange, mergeSiblingHighlights, normalizeHighlights, removeHighlights, serializeHighlights } from "./Library";
+import { createWrapper, deserializeHighlights, doHighlight, flattenNestedHighlights, getHighlights, highlightRange, mergeSiblingHighlights, normalizeHighlights, removeHighlights, serializeHighlights } from "./Library";
 import { hlDescriptorI, optionsImpl, paramsImp, TextHighlighterSelf, TextHighlighterType } from "./types";
 import { bindEvents, DATA_ATTR, defaults, dom, NODE_TYPE, unbindEvents } from "./Utils";
 
@@ -40,12 +40,12 @@ TextHighlighter.prototype.highlightHandler = function () {
     this.doHighlight();
 };
 
-TextHighlighter.prototype.doHighlight = function (keepRange: boolean) {
-    doHighlight(this.el, keepRange, this.options);
+TextHighlighter.prototype.doHighlight = function (id:string,keepRange: boolean) {
+    doHighlight(this.el, id,keepRange, this.options);
 };
 
-TextHighlighter.prototype.highlightRange = function (range: Range, wrapper: { cloneNode: (arg0: boolean) => any }) {
-    highlightRange(this.el, range, wrapper);
+TextHighlighter.prototype.highlightRange = function (id:string,range: Range, wrapper: { cloneNode: (arg0: boolean) => any }) {
+    highlightRange(this.el, id,range, wrapper);
 };
 
 TextHighlighter.prototype.normalizeHighlights = function (highlights: any[]) {
@@ -89,9 +89,9 @@ TextHighlighter.prototype.deserializeHighlights = function ( hlDescriptors: hlDe
     deserializeHighlights(this.el, hlDescriptors);
 };
 
-TextHighlighter.prototype.find = function (text: string, caseSensitive: boolean) {
-    find(this.el, text, caseSensitive);
-};
+// TextHighlighter.prototype.find = function (text: string, caseSensitive: boolean) {
+//     find(this.el, text, caseSensitive);
+// };
 
 (TextHighlighter as any).createWrapper = function (options: optionsImpl) {
     createWrapper(options);
