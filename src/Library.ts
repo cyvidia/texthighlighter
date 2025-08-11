@@ -271,18 +271,41 @@ export const normalizeHighlights = function (highlights: any[]) {
     return normalizedHighlights;
 };
 
+const getSelectedRange = function (el: HTMLElement) {
+    return dom(el).getRange();
+}
+
+
+
 /**
  * highlight selected element
+ * @param el 
+ * @param keepRange 
+ * @param options 
+ * @returns 
+ */
+const doHighlight = function (el: HTMLElement, keepRange: boolean, options?: optionsImpl): boolean {
+    let range = getSelectedRange(el);
+    if (!range || range.collapsed) {
+        return false;
+    }
+
+    return doHighlightOnRange(el, range, keepRange, options);
+}
+
+/**
+ * highlight range
  * @param el
+ * @param range
  * @param options
  * @param keepRange
  */
-const doHighlight = function (
+const doHighlightOnRange = function (
     el: HTMLElement,
+    range:Range,
     keepRange: boolean,
     options?: optionsImpl
 ): boolean {
-    const range = dom(el).getRange();
     let wrapper, createdHighlights, normalizedHighlights, timestamp: string;
     if (!options) options = new optionsImpl();
 
@@ -627,6 +650,8 @@ const removeHighlights = function (element: HTMLElement, options?: optionsImpl) 
 };
 
 export {
+    getSelectedRange as getSelectionRange,
+    doHighlightOnRange,
     doHighlight,
     deserializeHighlights,
     serializeHighlights,
