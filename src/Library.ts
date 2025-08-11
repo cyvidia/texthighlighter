@@ -358,21 +358,13 @@ const doHighlightOnRange = function (
  * @returns {Array} - array of deserialized highlights.
  * @memberof TextHighlighter
  */
-const deserializeHighlights = function (el: HTMLElement, json: string) {
-    let hlDescriptors: hlDescriptorI[];
+const deserializeHighlights = function (el: HTMLElement, hlDescriptors: hlDescriptorI[]) {
     const highlights: { appendChild: (arg0: any) => void }[] = [];
     //    const self = this;
 
-    if (!json) {
-        return highlights;
-    }
 
-    try {
-        // const r = String.raw`${json}`;
-        hlDescriptors = JSON.parse(json);
-    } catch (e) {
-        throw "Can't parse JSON: " + e;
-    }
+
+
 
     function deserializationFn(hlDescriptor: hlDescriptorI) {
         const hl = hlDescriptor;
@@ -580,7 +572,7 @@ const serializeHighlights = function (el: HTMLElement | null) {
             hlDescriptors.push(hl);
         }
     });
-    return JSON.stringify(hlDescriptors);
+    return hlDescriptors;
 };
 
 const removeHighlights = function (element: HTMLElement, options?: optionsImpl) {

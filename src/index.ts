@@ -1,6 +1,6 @@
 import { doHighlight, getSelectionRange, doHighlightOnRange, deserializeHighlights, serializeHighlights, removeHighlights, createWrapper, highlightRange } from "../src/Library";
 import { TextHighlighter } from "./TextHighlighter";
-import { optionsImpl } from "./types";
+import { hlDescriptorI, optionsImpl } from "./types";
 
 export {
     doHighlight,
@@ -10,6 +10,7 @@ export {
     serializeHighlights,
     removeHighlights,
     optionsImpl,
+    hlDescriptorI,
     createWrapper,
     highlightRange,
     TextHighlighter

@@ -1,5 +1,5 @@
 import { createWrapper, deserializeHighlights, doHighlight, find, flattenNestedHighlights, getHighlights, highlightRange, mergeSiblingHighlights, normalizeHighlights, removeHighlights, serializeHighlights } from "./Library";
-import { optionsImpl, paramsImp, TextHighlighterSelf, TextHighlighterType } from "./types";
+import { hlDescriptorI, optionsImpl, paramsImp, TextHighlighterSelf, TextHighlighterType } from "./types";
 import { bindEvents, DATA_ATTR, defaults, dom, NODE_TYPE, unbindEvents } from "./Utils";
 
 const TextHighlighter: TextHighlighterType = function (this: TextHighlighterSelf, element: HTMLElement, options?: optionsImpl) {
@@ -85,8 +85,8 @@ TextHighlighter.prototype.serializeHighlights = function () {
     return serializeHighlights(this.el);
 };
 
-TextHighlighter.prototype.deserializeHighlights = function (json: string) {
-    deserializeHighlights(this.el, json);
+TextHighlighter.prototype.deserializeHighlights = function ( hlDescriptors: hlDescriptorI[]) {
+    deserializeHighlights(this.el, hlDescriptors);
 };
 
 TextHighlighter.prototype.find = function (text: string, caseSensitive: boolean) {
