@@ -484,7 +484,7 @@ const deserializeHighlights = function (
  * @returns {Array} - array of highlights.
  * @memberof TextHighlighter
  */
-export const getHighlights = function (el: HTMLElement, params?: paramsImp) {
+const getHighlightElements = function (el: HTMLElement, params?: paramsImp) {
   if (!params) params = new paramsImp();
   params = defaults(params, {
     container: el,
@@ -493,7 +493,7 @@ export const getHighlights = function (el: HTMLElement, params?: paramsImp) {
   });
   if (params.container) {
     const nodeList = params.container.querySelectorAll("[" + DATA_ATTR + "]");
-    let highlights = Array.prototype.slice.call(nodeList);
+    let highlights = Array.prototype.slice.call(nodeList) as HTMLElement[];
 
     if (params.andSelf === true && params.container.hasAttribute(DATA_ATTR)) {
       highlights.push(params.container);
@@ -506,7 +506,45 @@ export const getHighlights = function (el: HTMLElement, params?: paramsImp) {
   }
 };
 
-export const getHighlightsById = function (
+/**
+ * Returns highlights from given container grouped by highlight ID.
+ * @param el - element to search in.
+ * @param params - parameters for searching.
+ * @returns {Object} - object with highlight IDs as keys and arrays of highlights as values.
+ * @memberof TextHighlighter
+ */
+// Using export function directly instead of const assignment for better compatibility
+/* webpack: used */
+export function getHighlightElementsMap(
+  el: HTMLElement,
+  params?: paramsImp
+): Map<string, HTMLElement[]> {
+  if (!params) params = new paramsImp();
+  params = defaults(params, {
+    container: el,
+    andSelf: true,
+    grouped: false,
+  });
+
+  const highlights = getHighlightElements(el, params);
+
+  const map = new Map<string, HTMLElement[]>();
+  if (!highlights || highlights.length === 0) return map;
+
+  highlights.forEach((hl) => {
+    const id = hl.getAttribute(ID_ATTR);
+    if (id) {
+      if (!map.has(id)) {
+        map.set(id, []);
+      }
+      map.get(id)?.push(hl);
+    }
+  });
+
+  return map;
+}
+
+const getHighlightElementsById = function (
   el: HTMLElement,
   id: string,
   params?: paramsImp
@@ -520,7 +558,7 @@ export const getHighlightsById = function (
 
   if (params.container) {
     const nodeList = params.container.querySelectorAll(`[${ID_ATTR}="${id}"]`);
-    let highlights = Array.prototype.slice.call(nodeList);
+    let highlights = Array.prototype.slice.call(nodeList) as HTMLElement[];
 
     if (
       params.andSelf === true &&
@@ -545,7 +583,7 @@ export const getHighlightsById = function (
  */
 const serializeHighlights = function (el: HTMLElement | null) {
   if (!el) return;
-  const highlights = getHighlights(el),
+  const highlights = getHighlightElements(el),
     refEl = el,
     hlDescriptors: hlDescriptorI[] = [];
 
@@ -683,17 +721,7 @@ const removeHighlightById = function (
   id: string,
   options?: optionsImpl
 ) {
-  const highlights = getHighlightsById(el, id);
-  if (!highlights || highlights.length === 0) return;
-  _removeHighlights(highlights, options);
-};
-
-const removeHighlightById1 = function (
-  el: HTMLElement,
-  id: string,
-  options?: optionsImpl
-) {
-  const highlights = getHighlightsById(el, id);
+  const highlights = getHighlightElementsById(el, id);
   if (!highlights || highlights.length === 0) return;
   _removeHighlights(highlights, options);
 };
@@ -702,7 +730,7 @@ const removeHighlights = function (
   element: HTMLElement,
   options?: optionsImpl
 ) {
-  const highlights = getHighlights(element, { container: element });
+  const highlights = getHighlightElements(element, { container: element });
 
   if (!highlights || highlights.length === 0) return;
   _removeHighlights(highlights, options);
@@ -712,11 +740,12 @@ export {
   getSelectedRange as getSelectionRange,
   doHighlightOnRange,
   doHighlight,
+  // getHighlightElementsMap is already exported directly
+  getHighlightElements,
   deserializeHighlights,
   serializeHighlights,
   removeHighlights,
   removeHighlightById,
-  removeHighlightById1,
   createWrapper,
   highlightRange,
 };
