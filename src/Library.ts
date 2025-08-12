@@ -688,6 +688,16 @@ const removeHighlightById = function (
   _removeHighlights(highlights, options);
 };
 
+const removeHighlightById1 = function (
+  el: HTMLElement,
+  id: string,
+  options?: optionsImpl
+) {
+  const highlights = getHighlightsById(el, id);
+  if (!highlights || highlights.length === 0) return;
+  _removeHighlights(highlights, options);
+};
+
 const removeHighlights = function (
   element: HTMLElement,
   options?: optionsImpl
@@ -698,9 +708,6 @@ const removeHighlights = function (
   _removeHighlights(highlights, options);
 };
 
-const testFunc = function (el: HTMLElement, id: string, options?: optionsImpl) {
-  return true;
-};
 export {
   getSelectedRange as getSelectionRange,
   doHighlightOnRange,
@@ -709,7 +716,7 @@ export {
   serializeHighlights,
   removeHighlights,
   removeHighlightById,
-  testFunc,
+  removeHighlightById1,
   createWrapper,
   highlightRange,
 };
