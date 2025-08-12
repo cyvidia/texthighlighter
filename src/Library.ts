@@ -603,19 +603,6 @@ const serializeHighlights = function (el: HTMLElement | null) {
     return hlDescriptors;
 };
 
-const removeHighlightById = function (el: HTMLElement, id:string, options?: optionsImpl) {
-    const highlights = getHighlightsById(el, id);
-    if (!highlights || highlights.length === 0) return;
-    _removeHighlights(highlights, options);
-}
-
-const removeHighlights = function (element: HTMLElement, options?: optionsImpl) {
-    const highlights = getHighlights(element, { container: element });
-
-    if (!highlights || highlights.length === 0) return;
-    _removeHighlights(highlights, options);
-}
-
 const _removeHighlights = function (highlights:any[], options?: optionsImpl) {
     // self = this;
     if (!highlights) return;
@@ -679,6 +666,20 @@ const _removeHighlights = function (highlights:any[], options?: optionsImpl) {
         }
     });
 };
+
+const removeHighlightById = function (el: HTMLElement, id:string, options?: optionsImpl) {
+    const highlights = getHighlightsById(el, id);
+    if (!highlights || highlights.length === 0) return;
+    _removeHighlights(highlights, options);
+};
+
+const removeHighlights = function (element: HTMLElement, options?: optionsImpl) {
+    const highlights = getHighlights(element, { container: element });
+
+    if (!highlights || highlights.length === 0) return;
+    _removeHighlights(highlights, options);
+};
+
 
 export {
     getSelectedRange as getSelectionRange,
