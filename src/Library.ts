@@ -583,6 +583,7 @@ const serializeHighlights = function (el: HTMLElement | null) {
       const length = highlight.textContent.length,
         hlPath = getElementPath(highlight, refEl);
       let color = "";
+      const id = highlight.getAttribute(ID_ATTR);
       if (wrapper instanceof HTMLElement) {
         const c = wrapper.getAttribute("data-backgroundcolor");
         if (c) color = c.trim();
@@ -598,6 +599,7 @@ const serializeHighlights = function (el: HTMLElement | null) {
         offset = highlight.previousSibling.length;
       }
       const hl: hlDescriptorI = {
+        id: id ?? undefined,
         wrapper,
         textContent: highlight.textContent,
         path: hlPath.join(":"),
