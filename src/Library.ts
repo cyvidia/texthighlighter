@@ -594,12 +594,14 @@ const serializeHighlights = function (el: HTMLElement | null) {
     el: HTMLElement | ParentNode | ChildNode,
     refElement: any
   ) {
+    console.log("getElementPathAndClauseId", el);
     const path = [];
     let clauseId: string | null = null;
     let childNodes;
     if (el)
       do {
         if (el instanceof HTMLElement && el.parentNode) {
+          console.log("el", el, el.parentNode);
           if (!clauseId && el.hasAttribute(CLAUSE_ID_ATTR)) {
             clauseId = el.getAttribute(CLAUSE_ID_ATTR);
           }
