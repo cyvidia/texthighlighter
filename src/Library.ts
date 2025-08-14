@@ -590,22 +590,29 @@ const serializeHighlights = function (el: HTMLElement | null) {
 
   if (!highlights) return;
 
-  function getElementPath(
+  function getElementPathAndClauseId(
     el: HTMLElement | ParentNode | ChildNode,
     refElement: any
   ) {
     const path = [];
+    let clauseId: string | null = null;
     let childNodes;
     if (el)
       do {
         if (el instanceof HTMLElement && el.parentNode) {
+          if (!clauseId && el.hasAttribute(CLAUSE_ID_ATTR)) {
+            clauseId = el.getAttribute(CLAUSE_ID_ATTR);
+          }
           childNodes = Array.prototype.slice.call(el.parentNode.childNodes);
           path.unshift(childNodes.indexOf(el));
           el = el.parentNode;
         }
       } while (el !== refElement || !el);
 
-    return path;
+    return {
+      path,
+      clauseId,
+    };
   }
 
   sortByDepth(highlights, false);
@@ -619,8 +626,11 @@ const serializeHighlights = function (el: HTMLElement | null) {
     if (highlight && highlight.textContent) {
       let offset = 0, // Hl offset from previous sibling within parent node.
         wrapper = highlight.cloneNode(true) as HTMLElement | string;
-      const length = highlight.textContent.length,
-        hlPath = getElementPath(highlight, refEl);
+      const length = highlight.textContent.length;
+      const { path: hlPath, clauseId } = getElementPathAndClauseId(
+        highlight,
+        refEl
+      );
       let color = "";
       const id = highlight.getAttribute(ID_ATTR);
       if (wrapper instanceof HTMLElement) {
@@ -639,8 +649,7 @@ const serializeHighlights = function (el: HTMLElement | null) {
       }
       const hl: hlDescriptorI = {
         id: id ?? undefined,
-        clauseId:
-          highlight.parentElement?.getAttribute(CLAUSE_ID_ATTR) ?? undefined,
+        clauseId: clauseId ?? undefined,
         wrapper,
         textContent: highlight.textContent,
         path: hlPath.join(":"),
