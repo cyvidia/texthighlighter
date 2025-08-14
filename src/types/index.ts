@@ -64,6 +64,7 @@ export class paramsImp {
 // eslint-disable-next-line @typescript-eslint/class-name-casing
 export interface hlDescriptorI {
   id: string | undefined;
+  clauseId: string | undefined;
   wrapper: string;
   textContent: string;
   color: string;

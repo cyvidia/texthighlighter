@@ -22,6 +22,8 @@ const /**
   DATA_ATTR = "data-highlighted",
 
   ID_ATTR = "data-highlight-id",
+
+  CLAUSE_ID_ATTR = "data-clause-id",
   /**
    * Attribute used to group highlight wrappers.
    * @type {string}
@@ -491,6 +493,7 @@ function sortByDepth(arr: any, descending: any) {
 export {
   DATA_ATTR,
   ID_ATTR,
+  CLAUSE_ID_ATTR,
   TIMESTAMP_ATTR,
   NODE_TYPE,
   IGNORE_TAGS,

@@ -14,6 +14,7 @@ import {
   haveSameColor,
   defaults,
   groupHighlights,
+  CLAUSE_ID_ATTR,
 } from "./Utils";
 
 /**
@@ -636,8 +637,17 @@ const serializeHighlights = function (el: HTMLElement | null) {
       ) {
         offset = highlight.previousSibling.length;
       }
+      if (highlight.children.length != 1) {
+        console.log(
+          "unexpected highlight children count",
+          highlight,
+          highlight.children.length
+        );
+      }
       const hl: hlDescriptorI = {
         id: id ?? undefined,
+        clauseId:
+          highlight.children.item(0)?.getAttribute(CLAUSE_ID_ATTR) ?? undefined,
         wrapper,
         textContent: highlight.textContent,
         path: hlPath.join(":"),
