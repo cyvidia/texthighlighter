@@ -601,7 +601,7 @@ const serializeHighlights = function (el: HTMLElement | null) {
     if (el)
       do {
         if (el instanceof HTMLElement && el.parentNode) {
-          console.log("el", el, el.parentNode);
+          console.log("el", el);
           if (!clauseId && el.hasAttribute(CLAUSE_ID_ATTR)) {
             clauseId = el.getAttribute(CLAUSE_ID_ATTR);
           }
