@@ -28,3 +28,9 @@ export {
   highlightRange,
   TextHighlighter,
 };
+
+// Export Cheerio implementations
+export { 
+  serializeHighlightsCheerio,
+  deserializeHighlightsCheerio 
+} from "./CheerioHighlighter";

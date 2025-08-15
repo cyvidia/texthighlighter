@@ -1,4 +1,4 @@
-import { optionsImpl, paramsImp } from "./types";
+import { optionsImpl, hlDescriptorI, paramsImp } from "./types";
 /**
  * Creates wrapper for highlights.
  * TextHighlighter instance calls this method each time it needs to create highlights and pass options retrieved
@@ -17,7 +17,7 @@ declare function createWrapper(options: optionsImpl): HTMLSpanElement;
  * @returns {Array} - array of created highlights.
  * @memberof TextHighlighter
  */
-declare const highlightRange: (el: HTMLElement, range: Range, wrapper: {
+declare const highlightRange: (el: HTMLElement, id: string, range: Range, wrapper: {
     cloneNode: (arg0: boolean) => any;
 }) => HTMLElement[];
 /**
@@ -44,13 +44,23 @@ export declare const mergeSiblingHighlights: (highlights: any[]) => void;
  * @memberof TextHighlighter
  */
 export declare const normalizeHighlights: (highlights: any[]) => any;
+declare const getSelectedRange: (el: HTMLElement) => Range | undefined;
 /**
- * highlight selected element
+ * highlight range
  * @param el
+ * @param range
  * @param options
  * @param keepRange
  */
-declare const doHighlight: (el: HTMLElement, keepRange: boolean, options?: optionsImpl | undefined) => boolean;
+declare const doHighlightOnRange: (el: HTMLElement, range: Range, id: string, keepRange: boolean, options?: optionsImpl | undefined) => boolean;
+/**
+ * highlight selected element
+ * @param el
+ * @param keepRange
+ * @param options
+ * @returns
+ */
+declare const doHighlight: (el: HTMLElement, id: string, keepRange: boolean, options?: optionsImpl | undefined) => boolean;
 /**
  * Deserializes highlights.
  * @throws exception when can't parse JSON or JSON has invalid structure.
@@ -58,10 +68,9 @@ declare const doHighlight: (el: HTMLElement, keepRange: boolean, options?: optio
  * @returns {Array} - array of deserialized highlights.
  * @memberof TextHighlighter
  */
-declare const deserializeHighlights: (el: HTMLElement, json: string) => {
+declare const deserializeHighlights: (el: HTMLElement, hlDescriptors: hlDescriptorI[]) => {
     appendChild: (arg0: any) => void;
 }[];
-export declare const find: (el: HTMLElement, text: string, caseSensitive: boolean, options?: optionsImpl | undefined) => void;
 /**
  * Returns highlights from given container.
  * @param params
@@ -75,12 +84,21 @@ export declare const find: (el: HTMLElement, text: string, caseSensitive: boolea
  * @returns {Array} - array of highlights.
  * @memberof TextHighlighter
  */
-export declare const getHighlights: (el: HTMLElement, params?: paramsImp | undefined) => any[] | undefined;
+declare const getHighlightElements: (el: HTMLElement, params?: paramsImp | undefined) => HTMLElement[] | undefined;
+/**
+ * Returns highlights from given container grouped by highlight ID.
+ * @param el - element to search in.
+ * @param params - parameters for searching.
+ * @returns {Object} - object with highlight IDs as keys and arrays of highlights as values.
+ * @memberof TextHighlighter
+ */
+export declare function getHighlightElementsMap(el: HTMLElement, params?: paramsImp): Map<string, HTMLElement[]>;
 /**
  * Serializes all highlights in the element the highlighter is applied to.
  * @returns {string} - stringified JSON with highlights definition
  * @memberof TextHighlighter
  */
-declare const serializeHighlights: (el: HTMLElement | null) => string | undefined;
+declare const serializeHighlights: (el: HTMLElement | null) => hlDescriptorI[] | undefined;
+declare const removeHighlightById: (el: HTMLElement, id: string, options?: optionsImpl | undefined) => void;
 declare const removeHighlights: (element: HTMLElement, options?: optionsImpl | undefined) => void;
-export { doHighlight, deserializeHighlights, serializeHighlights, removeHighlights, createWrapper, highlightRange };
+export { getSelectedRange as getSelectionRange, doHighlightOnRange, doHighlight, getHighlightElements, deserializeHighlights, serializeHighlights, removeHighlights, removeHighlightById, createWrapper, highlightRange, };

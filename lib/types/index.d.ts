@@ -56,6 +56,9 @@ export declare class paramsImp {
     grouped?: any;
 }
 export interface hlDescriptorI {
+    id: string | undefined;
+    hlClauseId: string | undefined;
+    rootClauseId: string | undefined;
     wrapper: string;
     textContent: string;
     color: string;

@@ -1,4 +1,5 @@
-import { doHighlight, deserializeHighlights, serializeHighlights, removeHighlights, createWrapper, highlightRange } from "./Library";
+import { doHighlight, getSelectionRange, doHighlightOnRange, deserializeHighlights, serializeHighlights, removeHighlights, createWrapper, highlightRange, removeHighlightById, getHighlightElementsMap } from "../src/Library";
 import { TextHighlighter } from "./TextHighlighter";
-import { optionsImpl } from "./types";
-export { doHighlight, deserializeHighlights, serializeHighlights, removeHighlights, optionsImpl, createWrapper, highlightRange, TextHighlighter };
+import { hlDescriptorI, optionsImpl } from "./types";
+export { doHighlight, getSelectionRange, doHighlightOnRange, deserializeHighlights, serializeHighlights, removeHighlights, getHighlightElementsMap, removeHighlightById, optionsImpl, hlDescriptorI, createWrapper, highlightRange, TextHighlighter, };
+export { serializeHighlightsCheerio, deserializeHighlightsCheerio } from "./CheerioHighlighter";

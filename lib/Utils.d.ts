@@ -1,7 +1,7 @@
 declare const /**
    * Attribute added by default to every highlight.
    * @type {string}
-   */ DATA_ATTR = "data-highlighted", 
+   */ DATA_ATTR = "data-highlighted", ID_ATTR = "data-highlight-id", CLAUSE_ID_ATTR = "data-clause-id", 
 /**
  * Attribute used to group highlight wrappers.
  * @type {string}
@@ -177,4 +177,4 @@ declare function haveSameColor(a: Node, b: Node): boolean;
  * @param {boolean} descending - order of sort.
  */
 declare function sortByDepth(arr: any, descending: any): void;
-export { DATA_ATTR, TIMESTAMP_ATTR, NODE_TYPE, IGNORE_TAGS, dom, refineRangeBoundaries, sortByDepth, unique, haveSameColor, defaults, groupHighlights, activator };
+export { DATA_ATTR, ID_ATTR, CLAUSE_ID_ATTR, TIMESTAMP_ATTR, NODE_TYPE, IGNORE_TAGS, dom, refineRangeBoundaries, sortByDepth, unique, haveSameColor, defaults, groupHighlights, activator };
