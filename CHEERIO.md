@@ -1,13 +1,17 @@
 # TextHighlighter Cheerio Implementation
 
-This is an alternative implementation of the `serializeHighlights` and `deserializeHighlights` functions using Cheerio instead of the DOM API. 
+This is an alternative implementation of the `serializeHighlights` and `deserializeHighlights` functions using Cheerio instead of the DOM API.
 It produces the exact same output as the original implementation.
 
 ## Usage
 
 ### In the browser
+
 ```typescript
-import { serializeHighlights, deserializeHighlights } from '@funktechno/texthighlighter';
+import {
+  serializeHighlights,
+  deserializeHighlights,
+} from "@funktechno/texthighlighter";
 
 // Use the original DOM-based implementation
 const highlights = serializeHighlights(element);
@@ -15,17 +19,25 @@ const newHighlights = deserializeHighlights(element, highlightDescriptors);
 ```
 
 ### In Node.js (server-side)
+
 ```typescript
-import { serializeHighlightsCheerio, deserializeHighlightsCheerio } from '@funktechno/texthighlighter';
+import {
+  serializeHighlightsCheerio,
+  deserializeHighlightsCheerio,
+} from "@funktechno/texthighlighter";
 
 // Use the Cheerio-based implementation for server-side code
 const highlights = serializeHighlightsCheerio(element);
-const newHighlights = deserializeHighlightsCheerio(element, highlightDescriptors);
+const newHighlights = deserializeHighlightsCheerio(
+  element,
+  highlightDescriptors
+);
 ```
 
 ## Implementation details
 
 The Cheerio implementation:
+
 1. Takes an HTMLElement and converts it to a string
 2. Uses Cheerio to parse the HTML string
 3. For serialization: Extracts all highlights with the same algorithm as the original implementation

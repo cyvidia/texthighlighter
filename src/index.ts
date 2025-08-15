@@ -30,7 +30,7 @@ export {
 };
 
 // Export Cheerio implementations
-export { 
+export {
   serializeHighlightsCheerio,
-  deserializeHighlightsCheerio 
+  deserializeHighlightsCheerio,
 } from "./CheerioHighlighter";
