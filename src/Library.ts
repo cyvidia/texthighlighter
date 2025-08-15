@@ -577,6 +577,38 @@ const getHighlightElementsById = function (
   return null;
 };
 
+function getElementPathAndClauseId(
+  el: HTMLElement | ParentNode | ChildNode,
+  refElement: any
+) {
+  const path = [];
+  let highlightClauseId: string | null = null;
+  let rootClauseId: string | null = null;
+  let childNodes;
+  if (el)
+    do {
+      if (el instanceof HTMLElement && el.parentNode) {
+        const clauseId = el.getAttribute(CLAUSE_ID_ATTR);
+        if (clauseId) {
+          if (!highlightClauseId) {
+            highlightClauseId = clauseId;
+          }
+          rootClauseId = clauseId;
+        }
+
+        childNodes = Array.prototype.slice.call(el.parentNode.childNodes);
+        path.unshift(childNodes.indexOf(el));
+        el = el.parentNode;
+      }
+    } while (el !== refElement || !el);
+
+  return {
+    path,
+    highlightClauseId,
+    rootClauseId,
+  };
+}
+
 /**
  * Serializes all highlights in the element the highlighter is applied to.
  * @returns {string} - stringified JSON with highlights definition
@@ -589,38 +621,6 @@ const serializeHighlights = function (el: HTMLElement | null) {
     hlDescriptors: hlDescriptorI[] = [];
 
   if (!highlights) return;
-
-  function getElementPathAndClauseId(
-    el: HTMLElement | ParentNode | ChildNode,
-    refElement: any
-  ) {
-    const path = [];
-    let highlightClauseId: string | null = null;
-    let rootClauseId: string | null = null;
-    let childNodes;
-    if (el)
-      do {
-        if (el instanceof HTMLElement && el.parentNode) {
-          const clauseId = el.getAttribute(CLAUSE_ID_ATTR);
-          if (clauseId) {
-            if (!highlightClauseId) {
-              highlightClauseId = clauseId;
-            }
-            rootClauseId = clauseId;
-          }
-
-          childNodes = Array.prototype.slice.call(el.parentNode.childNodes);
-          path.unshift(childNodes.indexOf(el));
-          el = el.parentNode;
-        }
-      } while (el !== refElement || !el);
-
-    return {
-      path,
-      highlightClauseId,
-      rootClauseId,
-    };
-  }
 
   sortByDepth(highlights, false);
 
@@ -761,6 +761,7 @@ export {
   getSelectedRange as getSelectionRange,
   doHighlightOnRange,
   doHighlight,
+  getElementPathAndClauseId,
   // getHighlightElementsMap is already exported directly
   getHighlightElements,
   deserializeHighlights,

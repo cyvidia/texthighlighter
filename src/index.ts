@@ -9,6 +9,7 @@ import {
   highlightRange,
   removeHighlightById,
   getHighlightElementsMap,
+  getElementPathAndClauseId,
 } from "../src/Library";
 import { TextHighlighter } from "./TextHighlighter";
 import { hlDescriptorI, optionsImpl } from "./types";
@@ -19,6 +20,7 @@ export {
   doHighlightOnRange,
   deserializeHighlights,
   serializeHighlights,
+  getElementPathAndClauseId,
   removeHighlights,
   getHighlightElementsMap,
   removeHighlightById,
