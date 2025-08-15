@@ -50,9 +50,9 @@ export const serializeHighlightsWithCheerio = function (
       let highlightClauseId: string | undefined = undefined;
       let rootClauseId: string | undefined = undefined;
 
-  let $current = $highlight;
-  let $parent = $current.parent();
-  while ($parent.length && ($parent[0] as any).type !== "root") {
+      let $current = $highlight;
+      let $parent = $current.parent();
+      while ($parent.length && ($parent[0] as any).type !== "root") {
         // Record clause ids: first encountered (closest) and last encountered (root-most)
         const clauseId = $current.attr(CLAUSE_ID_ATTR);
         if (clauseId) {
@@ -66,8 +66,8 @@ export const serializeHighlightsWithCheerio = function (
         path.unshift(index);
 
         // Move up
-  $current = $parent;
-  $parent = $current.parent();
+        $current = $parent;
+        $parent = $current.parent();
       }
 
       // Calculate offset from previous text sibling within parent.contents()
@@ -75,9 +75,16 @@ export const serializeHighlightsWithCheerio = function (
       const $parentForOffset = $highlight.parent();
       if ($parentForOffset.length) {
         const contentSiblings = $parentForOffset.contents().toArray();
-        const selfIndex = contentSiblings.findIndex((el) => el === $highlight[0]);
-        const prevNode = selfIndex > 0 ? contentSiblings[selfIndex - 1] : undefined;
-        if (prevNode && (prevNode as any).type === "text" && typeof (prevNode as any).data === "string") {
+        const selfIndex = contentSiblings.findIndex(
+          (el) => el === $highlight[0]
+        );
+        const prevNode =
+          selfIndex > 0 ? contentSiblings[selfIndex - 1] : undefined;
+        if (
+          prevNode &&
+          (prevNode as any).type === "text" &&
+          typeof (prevNode as any).data === "string"
+        ) {
           offset = ((prevNode as any).data as string).length;
         }
       }
@@ -166,7 +173,7 @@ export const deserializeHighlightsWithCheerio = function (
       if (elIndex === undefined) return;
 
       // Start from the container element (first top-level element of the provided HTML)
-  let $node: any = $.root().children().first();
+      let $node: any = $.root().children().first();
 
       // Traverse down the path
       const pathIndices = hl.hlpaths.slice(0); // Copy path
@@ -178,7 +185,7 @@ export const deserializeHighlightsWithCheerio = function (
 
       // Get all contents including text nodes
       const contents: any[] = [];
-  $node.contents().each((_: any, element: any) => {
+      $node.contents().each((_: any, element: any) => {
         contents.push(element);
       });
 
