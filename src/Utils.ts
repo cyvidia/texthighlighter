@@ -24,6 +24,7 @@ const /**
   ID_ATTR = "data-highlight-id",
 
   CLAUSE_ID_ATTR = "data-clause-id",
+  WRAPPER_ID = "id",
   /**
    * Attribute used to group highlight wrappers.
    * @type {string}
@@ -494,6 +495,7 @@ export {
   DATA_ATTR,
   ID_ATTR,
   CLAUSE_ID_ATTR,
+  WRAPPER_ID,
   TIMESTAMP_ATTR,
   NODE_TYPE,
   IGNORE_TAGS,

@@ -15,6 +15,7 @@ import {
   defaults,
   groupHighlights,
   CLAUSE_ID_ATTR,
+  WRAPPER_ID,
 } from "./Utils";
 
 /**
@@ -598,7 +599,8 @@ function getElementPathAndClauseId(
     do {
       if (el instanceof HTMLElement && el.parentNode) {
         log("Element:", el);
-        const clauseId = el.getAttribute(CLAUSE_ID_ATTR);
+        const clauseId =
+          el.getAttribute(CLAUSE_ID_ATTR) ?? el.getAttribute(WRAPPER_ID);
         log("Clause ID:", clauseId);
         if (clauseId) {
           if (!highlightClauseId) {
