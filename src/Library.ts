@@ -599,14 +599,18 @@ function getElementPathAndClauseId(
     do {
       if (el instanceof HTMLElement && el.parentNode) {
         log("Element:", el);
-        const clauseId =
+        const currentHlClauseId = el.getAttribute(CLAUSE_ID_ATTR);
+        log("data-clause-id:", currentHlClauseId);
+        if (currentHlClauseId && highlightClauseId === null) {
+          highlightClauseId = currentHlClauseId;
+        }
+        const currentRootClauseId =
           el.getAttribute(CLAUSE_ID_ATTR) ?? el.getAttribute(WRAPPER_ID);
-        log("Clause ID:", clauseId);
-        if (clauseId) {
-          if (!highlightClauseId) {
-            highlightClauseId = clauseId;
-          }
-          rootClauseId = clauseId;
+
+        log("data-clause-id ?? id:", currentRootClauseId);
+
+        if (currentRootClauseId) {
+          rootClauseId = currentRootClauseId;
         }
 
         log("highlightClauseId:", highlightClauseId);
