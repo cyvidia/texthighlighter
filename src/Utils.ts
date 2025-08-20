@@ -20,11 +20,9 @@ const /**
    * @type {string}
    */
   DATA_ATTR = "data-highlighted",
-
   ID_ATTR = "data-highlight-id",
-
   CLAUSE_ID_ATTR = "data-clause-id",
-  WRAPPER_ID = "id",
+  WRAPPER_ID = "wrapper-id",
   /**
    * Attribute used to group highlight wrappers.
    * @type {string}
@@ -32,7 +30,7 @@ const /**
   TIMESTAMP_ATTR = "data-timestamp",
   NODE_TYPE = {
     ELEMENT_NODE: 1,
-    TEXT_NODE: 3
+    TEXT_NODE: 3,
   },
   /**
    * Don't highlight content of these tags.
@@ -52,10 +50,10 @@ const /**
     "EMBED",
     "PARAM",
     "METER",
-    "PROGRESS"
+    "PROGRESS",
   ];
 
-function activator<T>(type: { new(): T }): T {
+function activator<T>(type: { new (): T }): T {
   return new type();
 }
 
@@ -92,7 +90,7 @@ function groupHighlights(highlights: any) {
             return h.textContent;
           })
           .join("");
-      }
+      },
     });
   });
 
@@ -106,8 +104,7 @@ function groupHighlights(highlights: any) {
  * @returns {object}
  */
 function defaults<T>(obj: T, source: T): T {
-  if (obj == null)
-    obj = {} as T;
+  if (obj == null) obj = {} as T;
   for (const prop in source) {
     if (
       Object.prototype.hasOwnProperty.call(source, prop) &&
@@ -137,10 +134,8 @@ function unique(arr: any) {
  * @returns {object} refined boundaries and initial state of highlighting algorithm.
  */
 function refineRangeBoundaries(range: Range) {
-  let startContainer:
-    | Node
-    | (Node & ParentNode)
-    | null = range.startContainer as HTMLElement,
+  let startContainer: Node | (Node & ParentNode) | null =
+      range.startContainer as HTMLElement,
     endContainer: Node | (Node & ParentNode) | null = range.endContainer,
     goDeeper = true;
   const ancestor = range.commonAncestorContainer;
@@ -190,7 +185,7 @@ function refineRangeBoundaries(range: Range) {
   return {
     startContainer: startContainer,
     endContainer: endContainer,
-    goDeeper: goDeeper
+    goDeeper: goDeeper,
   };
 }
 
@@ -463,7 +458,7 @@ const dom = function (el: Node | HTMLElement | null | undefined) {
     getDocument: function () {
       // if ownerDocument is null then el is the document itself.
       if (el) return el.ownerDocument || el;
-    }
+    },
   };
 };
 
@@ -507,5 +502,5 @@ export {
   // eslint-disable-n
   defaults,
   groupHighlights,
-  activator
+  activator,
 };
