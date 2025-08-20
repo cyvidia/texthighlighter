@@ -579,8 +579,17 @@ const getHighlightElementsById = function (
 
 function getElementPathAndClauseId(
   el: HTMLElement | ParentNode | ChildNode,
-  refElement: any
+  refElement: any,
+  debug: boolean = false
 ) {
+  function log(...args: any[]) {
+    if (debug) {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+      // @ts-ignore
+      console.log(...args);
+    }
+  }
+
   const path = [];
   let highlightClauseId: string | null = null;
   let rootClauseId: string | null = null;
@@ -588,13 +597,20 @@ function getElementPathAndClauseId(
   if (el)
     do {
       if (el instanceof HTMLElement && el.parentNode) {
+        log("Element:", el);
         const clauseId = el.getAttribute(CLAUSE_ID_ATTR);
+        log("Clause ID:", clauseId);
         if (clauseId) {
           if (!highlightClauseId) {
             highlightClauseId = clauseId;
           }
           rootClauseId = clauseId;
         }
+
+        log("highlightClauseId:", highlightClauseId);
+        log("rootClauseId:", rootClauseId);
+
+        log("--------------");
 
         childNodes = Array.prototype.slice.call(el.parentNode.childNodes);
         path.unshift(childNodes.indexOf(el));
@@ -634,13 +650,17 @@ const serializeHighlights = function (el: HTMLElement | null) {
       let offset = 0, // Hl offset from previous sibling within parent node.
         wrapper = highlight.cloneNode(true) as HTMLElement | string;
       const length = highlight.textContent.length;
+      const id = highlight.getAttribute(ID_ATTR);
       const {
         path: hlPath,
         highlightClauseId,
         rootClauseId,
-      } = getElementPathAndClauseId(highlight, refEl);
+      } = getElementPathAndClauseId(
+        highlight,
+        refEl,
+        id === "9daee4ec-d862-4416-952e-2b39dfe143e7"
+      );
       let color = "";
-      const id = highlight.getAttribute(ID_ATTR);
       if (wrapper instanceof HTMLElement) {
         const c = wrapper.getAttribute("data-backgroundcolor");
         if (c) color = c.trim();
