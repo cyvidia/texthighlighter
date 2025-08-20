@@ -583,10 +583,10 @@ function getElementPathAndClauseId(
   debug: boolean = false
 ) {
   function log(...args: any[]) {
-    if (debug) {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-      // @ts-ignore
-      console.log(...args);
+    for (const arg of args) {
+      if (debug && console && console.log) {
+        console.log(arg);
+      }
     }
   }
 
