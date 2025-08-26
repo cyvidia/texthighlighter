@@ -1,14 +1,32 @@
-import { doHighlight, deserializeHighlights, serializeHighlights, removeHighlights, createWrapper, highlightRange } from "../src/Library";
+import {
+  doHighlight,
+  getSelectionRange,
+  doHighlightOnRange,
+  deserializeHighlights,
+  serializeHighlights,
+  removeHighlights,
+  createWrapper,
+  highlightRange,
+  removeHighlightById,
+  getHighlightElementsMap,
+  getElementPathAndClauseId,
+} from "../src/Library";
 import { TextHighlighter } from "./TextHighlighter";
-import { optionsImpl } from "./types";
+import { hlDescriptorI, optionsImpl } from "./types";
 
 export {
-    doHighlight,
-    deserializeHighlights,
-    serializeHighlights,
-    removeHighlights,
-    optionsImpl,
-    createWrapper,
-    highlightRange,
-    TextHighlighter
+  doHighlight,
+  getSelectionRange,
+  doHighlightOnRange,
+  deserializeHighlights,
+  serializeHighlights,
+  getElementPathAndClauseId,
+  removeHighlights,
+  getHighlightElementsMap,
+  removeHighlightById,
+  optionsImpl,
+  hlDescriptorI,
+  createWrapper,
+  highlightRange,
+  TextHighlighter,
 };

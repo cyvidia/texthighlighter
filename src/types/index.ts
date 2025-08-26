@@ -1,50 +1,53 @@
 export interface TextHighlighterI {
-    doHighlight: any;
-    deserializeHighlights: any;
-    serializeHighlights: any;
-    removeHighlights: any;
-    optionsImpl: any;
+  doHighlight: any;
+  deserializeHighlights: any;
+  serializeHighlights: any;
+  removeHighlights: any;
+  optionsImpl: any;
 }
 
 export interface TextHighlighterSelf {
-    el?: HTMLElement;
-    options?: optionsImpl;
+  el?: HTMLElement;
+  options?: optionsImpl;
 }
 
-export type TextHighlighterType = (element: HTMLElement, options: optionsImpl) => void;
+export type TextHighlighterType = (
+  element: HTMLElement,
+  options: optionsImpl
+) => void;
 
 export interface TextRange {
-    collapse(arg0: boolean): any;
-    select(): void;
-    parentElement(): any;
-    findText(text: any, arg1: number, arg2: number): any;
-    moveToElementText(el: any): any;
+  collapse(arg0: boolean): any;
+  select(): void;
+  parentElement(): any;
+  findText(text: any, arg1: number, arg2: number): any;
+  moveToElementText(el: any): any;
 }
 
 // eslint-disable-next-line @typescript-eslint/class-name-casing
 export class highlightI {
-    highlightHandler: any;
-    options: optionsImpl | undefined;
-    el: HTMLElement | undefined;
+  highlightHandler: any;
+  options: optionsImpl | undefined;
+  el: HTMLElement | undefined;
 }
 // eslint-disable-next-line @typescript-eslint/class-name-casing
 export interface optionsI {
-    color?: string;
-    highlightedClass?: string;
-    contextClass?: string;
-    onRemoveHighlight?: { (...e: any[]): boolean };
-    onBeforeHighlight?: { (...e: any[]): boolean };
-    onAfterHighlight?: { (...e: any[]): boolean };
+  color?: string;
+  highlightedClass?: string;
+  contextClass?: string;
+  onRemoveHighlight?: { (...e: any[]): boolean };
+  onBeforeHighlight?: { (...e: any[]): boolean };
+  onAfterHighlight?: { (...e: any[]): boolean };
 }
 // eslint-disable-next-line @typescript-eslint/class-name-casing
 export class optionsImpl implements optionsI {
-    color?: string | undefined;
-    highlightedClass?: string | undefined;
-    contextClass?: string | undefined;
-    onRemoveHighlight?: { (...e: any[]): boolean };
-    onBeforeHighlight?: { (...e: any[]): boolean };
-    onAfterHighlight?: { (...e: any[]): boolean };
-    //   constructor() {}
+  color?: string | undefined;
+  highlightedClass?: string | undefined;
+  contextClass?: string | undefined;
+  onRemoveHighlight?: { (...e: any[]): boolean };
+  onBeforeHighlight?: { (...e: any[]): boolean };
+  onAfterHighlight?: { (...e: any[]): boolean };
+  //   constructor() {}
 }
 
 // class containerI{
@@ -53,18 +56,21 @@ export class optionsImpl implements optionsI {
 // }
 // eslint-disable-next-line @typescript-eslint/class-name-casing
 export class paramsImp {
-    container?: HTMLElement;
-    andSelf?: boolean;
-    grouped?: any;
+  container?: HTMLElement;
+  andSelf?: boolean;
+  grouped?: any;
 }
 
 // eslint-disable-next-line @typescript-eslint/class-name-casing
 export interface hlDescriptorI {
-    wrapper: string;
-    textContent: string;
-    color: string;
-    hlpaths?: number[];
-    path: string;
-    offset: number;
-    length: number;
+  id: string | undefined;
+  hlClauseId: string | undefined;
+  rootClauseId: string | undefined;
+  wrapper: string;
+  textContent: string;
+  color: string;
+  hlpaths?: number[];
+  path: string;
+  offset: number;
+  length: number;
 }
